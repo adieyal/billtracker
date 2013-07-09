@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 from dateutil.parser import parse
 
 url = "http://www.info.gov.za/view/DynamicAction?pageid=603&orderby=comments_by,document_date_orig,title"
-#url = "http://localhost:8000/test.html"
-
+url = "http://localhost:8000/gov_info.test.html"
 
 def scrape():
     r = requests.get(url)
