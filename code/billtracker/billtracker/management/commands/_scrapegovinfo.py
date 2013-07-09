@@ -3,9 +3,10 @@ import re
 from itertools import chain
 from bs4 import BeautifulSoup
 from dateutil.parser import parse
+from urlparse import urljoin
 
 url = "http://www.info.gov.za/view/DynamicAction?pageid=603&orderby=comments_by,document_date_orig,title"
-url = "http://localhost:8000/gov_info.test.html"
+#url = "http://localhost:9999/gov_info.test.html"
 
 def scrape():
     r = requests.get(url)
@@ -35,12 +36,14 @@ def scrape():
             startdate, enddate = datestr.strip().replace("comments by ", "").split(" -- ")
             startdate = parse(startdate.strip())
             enddate = parse(enddate.strip())
+            document_url = urljoin(url, link.td.a["href"])
 
             bills.append({
                 "name" : bill_name,
                 "code" : bill_number,
                 "startdate" : startdate,
                 "enddate" : enddate,
+                "url" : document_url
             })
             #print bill_name, bill_number, startdate.strip(), enddate.strip()
     return bills
