@@ -18,7 +18,6 @@ class GovInfoScraper(models.Model):
         )
         bill_models.PreparliamentaryStage.objects.create(
             bill=bill,
-            stage="",
             comments_start=self.comment_startdate,
             comments_end=self.comment_enddate,
         )

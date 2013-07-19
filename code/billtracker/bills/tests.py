@@ -21,7 +21,6 @@ class TestBillStage(TestCase):
     def test_check_that_child_creates_parent_class(self):
         models.PreparliamentaryStage.objects.create(
             bill=self.bill,
-            stage="my stage",
             comments_start=datetime.now(),
             comments_end=datetime.now()
         )
@@ -32,7 +31,6 @@ class TestBillStage(TestCase):
 
         models.PreparliamentaryStage.objects.create(
             bill=self.bill,
-            stage="my stage",
             comments_start=datetime.now(),
             comments_end=datetime.now()
         )
@@ -45,19 +43,16 @@ class TestBillStage(TestCase):
 
         models.PreparliamentaryStage.objects.create(
             bill=self.bill,
-            stage="my stage",
             comments_start=datetime.now(),
             comments_end=datetime.now()
         )
 
         models.ParliamentFirstReading.objects.create(
             bill=self.bill,
-            stage="my stage",
         )
         
         stage3 = models.ParliamentPortfolioCommittee.objects.create(
             bill=self.bill,
-            stage="my stage",
         )
 
         self.assertEquals(self.bill.stages.count(), 3)
