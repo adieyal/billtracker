@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_cron',
     'south',
     'billtracker',
 )
@@ -151,5 +152,9 @@ LOGGING = {
         },
     }
 }
+
+CRON_CLASSES = [
+    "billtracker.management.jobs.InfoGovParser",
+]
 
 DIR_PARLIAMENT_MINUTES = "scraping/minutes"
