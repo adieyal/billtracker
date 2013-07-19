@@ -1,6 +1,8 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+from dateutil.parser import parse
+from urlparse import urljoin
 
 filedir = "files"
 site_url = "http://www.parliament.gov.za/live/"
@@ -37,10 +39,10 @@ def scrape():
             date = cells[2].text 
             house = cells[4].text
             language = cells[6].text
-            file_url = os.path.join(site_url, cells[10].a["href"])
+            file_url = urljoin(url, cells[10].a["href"])
             data = {
                 "filename" : filename,
-                "date" : date,
+                "date" : parse(date),
                 "house" : house,
                 "language" : language,
                 "url" : file_url,
