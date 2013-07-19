@@ -17,6 +17,10 @@ class BillStage(models.Model):
     bill = models.ForeignKey(Bill)
     stage = models.CharField(choices=stages, max_length=30)
 
+class PreparliamentaryStage(BillStage):
+    comments_start = models.DateField()
+    comments_end = models.DateField()
+
 class GovInfoScraper(models.Model):
     bill_name = models.CharField(max_length=100)
     bill_code = models.CharField(max_length=10)
