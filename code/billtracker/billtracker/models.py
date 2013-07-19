@@ -24,6 +24,7 @@ class GovInfoScraper(models.Model):
     comment_enddate = models.DateField()
     scrape_date = models.DateTimeField(auto_now_add=True)
     url = models.URLField(null=True, blank=True)
+    reviewed = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "[%s] %s" % (self.bill_code, self.bill_name)
