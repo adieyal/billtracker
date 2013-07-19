@@ -3,7 +3,7 @@ from scrapers.govinfo import scrape
 import billtracker.models as models
 
 class InfoGovParser(CronJobBase):
-    RUN_EVERY_MINS = 1
+    RUN_EVERY_MINS = 24 * 60
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = '[billtracker] InfoGov Parser'    # a unique code
@@ -20,4 +20,3 @@ class InfoGovParser(CronJobBase):
                     comment_enddate=r["enddate"],
                     url=r["url"],
                 )
-            print url
