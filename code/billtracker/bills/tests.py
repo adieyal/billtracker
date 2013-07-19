@@ -6,11 +6,62 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from datetime import datetime
+import models
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+class TestBillStage(TestCase):
+    def setUp(self):
+        self.bill = models.Bill.objects.create(
+            name="My bill",
+            code="1234"
+        )
+
+    def test_check_that_child_creates_parent_class(self):
+        models.PreparliamentaryStage.objects.create(
+            bill=self.bill,
+            stage="my stage",
+            comments_start=datetime.now(),
+            comments_end=datetime.now()
+        )
+
+        self.assertEquals(models.BillStage.objects.count(), 1)
+
+    def test_can_get_child_model_from_parent(self):
+
+        models.PreparliamentaryStage.objects.create(
+            bill=self.bill,
+            stage="my stage",
+            comments_start=datetime.now(),
+            comments_end=datetime.now()
+        )
+
+        stages = models.BillStage.objects.select_subclasses()
+        for stage in stages:
+            self.assertEquals(type(stage), models.PreparliamentaryStage)
+
+    def test_current_bill_stage(self):
+
+        models.PreparliamentaryStage.objects.create(
+            bill=self.bill,
+            stage="my stage",
+            comments_start=datetime.now(),
+            comments_end=datetime.now()
+        )
+
+        models.ParliamentFirstReading.objects.create(
+            bill=self.bill,
+            stage="my stage",
+        )
+        
+        stage3 = models.ParliamentPortfolioCommittee.objects.create(
+            bill=self.bill,
+            stage="my stage",
+        )
+
+        self.assertEquals(self.bill.stages.count(), 3)
+
+        self.assertEquals(self.bill.current_stage, stage3)
+
+
+
