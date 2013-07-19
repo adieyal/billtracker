@@ -12,6 +12,9 @@ class GovInfoScraper(models.Model):
     reviewed = models.BooleanField(default=False)
 
     def convert_to_bill(self):
+        if self.reviewed:
+            raise bill_models.BillException("Cannot re-convert once already converted")
+
         bill = bill_models.Bill.objects.create(
             name=self.bill_name,
             code=self.bill_code,
@@ -22,6 +25,8 @@ class GovInfoScraper(models.Model):
             comments_end=self.comment_enddate,
             document_url=self.url
         )
+        self.reviewed = True
+        self.save()
 
         return bill
 

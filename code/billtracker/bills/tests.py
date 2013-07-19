@@ -71,11 +71,13 @@ class TestGovInfoScraper(TestCase):
 
     def test_convert_scraper_creates_bill(self):
 
+        self.assertFalse(self.item.reviewed)
         bill = self.item.convert_to_bill()
         self.assertEquals(type(bill), models.Bill)
 
         self.assertEquals(bill.name, self.item.bill_name)
         self.assertEquals(bill.code, self.item.bill_code)
+        self.assertTrue(self.item.reviewed)
 
     def test_convert_scraper_creates_stage(self):
         bill = self.item.convert_to_bill()
@@ -86,3 +88,7 @@ class TestGovInfoScraper(TestCase):
         self.assertEquals(bill.current_stage, stage)
         self.assertEquals(type(stage), models.PreparliamentaryStage)
         self.assertEquals(stage.document_url, self.item.url)
+
+    def test_cant_convert_twice(self):
+        bill = self.item.convert_to_bill()
+        self.assertRaises(models.BillException, self.item.convert_to_bill)
