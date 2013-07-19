@@ -151,3 +151,5 @@ LOGGING = {
         },
     }
 }
+
+DIR_PARLIAMENT_MINUTES = "scraping/minutes"
