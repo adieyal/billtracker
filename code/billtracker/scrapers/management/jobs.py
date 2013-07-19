@@ -1,6 +1,6 @@
 from django_cron import CronJobBase, Schedule
 from scrapers.govinfo import scrape
-import billtracker.models as models
+import models
 
 class InfoGovParser(CronJobBase):
     RUN_EVERY_MINS = 24 * 60

@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_cron',
     'south',
+    'scrapers',
     'billtracker',
     'bills',
 )

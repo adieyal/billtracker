@@ -63,5 +63,7 @@ class TestBillStage(TestCase):
 
         self.assertEquals(self.bill.current_stage, stage3)
 
-
-
+#class TestGovInfoScraper(TestCase):
+#    def test_convert_scraper_entry_to_stage(self):
+#        models.GovInfoScraper.objects.create(
+        
