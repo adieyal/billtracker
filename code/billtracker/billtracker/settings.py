@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     'django_cron',
     'south',
     'billtracker',
+    'bills',
 )
 
 # A sample logging configuration. The only tangible logging
