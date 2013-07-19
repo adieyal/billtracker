@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from _scrapegovinfo import scrape
-import billtracker.models as models
+from scrapers.govinfo import scrape
+import scrapers.models as models
 
 class Command(BaseCommand):
     def handle(self, *args, **options):

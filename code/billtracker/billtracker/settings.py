@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_cron',
     'south',
+
     'scrapers',
     'billtracker',
     'bills',
@@ -156,7 +157,7 @@ LOGGING = {
 }
 
 CRON_CLASSES = [
-    "billtracker.management.jobs.InfoGovParser",
+    "scrapers.management.jobs.InfoGovParser",
 ]
 
 DIR_PARLIAMENT_MINUTES = "scraping/minutes"
