@@ -8,6 +8,7 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from datetime import datetime
 import models
+from scrapers.models import GovInfoScraper
 
 
 class TestBillStage(TestCase):
@@ -63,7 +64,28 @@ class TestBillStage(TestCase):
 
         self.assertEquals(self.bill.current_stage, stage3)
 
-#class TestGovInfoScraper(TestCase):
-#    def test_convert_scraper_entry_to_stage(self):
-#        models.GovInfoScraper.objects.create(
-        
+class TestGovInfoScraper(TestCase):
+    def setUp(self):
+        self.item = GovInfoScraper.objects.create(
+            bill_name="My bill",
+            bill_code="1234",
+            comment_startdate=datetime.now(),
+            comment_enddate=datetime.now()
+        )
+
+    def test_convert_scraper_creates_bill(self):
+
+        bill = self.item.convert_to_bill()
+        self.assertEquals(type(bill), models.Bill)
+
+        self.assertEquals(bill.name, self.item.bill_name)
+        self.assertEquals(bill.code, self.item.bill_code)
+
+    def test_convert_scraper_creates_stage(self):
+        bill = self.item.convert_to_bill()
+        self.assertEquals(models.BillStage.objects.count(), 1)
+        stage = models.BillStage.objects.select_subclasses()[0]
+        self.assertEquals(stage.bill, bill)
+
+        self.assertEquals(bill.current_stage, stage)
+        self.assertEquals(type(stage), models.PreparliamentaryStage)
