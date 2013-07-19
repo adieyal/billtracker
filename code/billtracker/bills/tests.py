@@ -64,6 +64,7 @@ class TestGovInfoScraper(TestCase):
         self.item = GovInfoScraper.objects.create(
             bill_name="My bill",
             bill_code="1234",
+            url="http://my.document",
             comment_startdate=datetime.now(),
             comment_enddate=datetime.now()
         )
@@ -84,3 +85,4 @@ class TestGovInfoScraper(TestCase):
 
         self.assertEquals(bill.current_stage, stage)
         self.assertEquals(type(stage), models.PreparliamentaryStage)
+        self.assertEquals(stage.document_url, self.item.url)

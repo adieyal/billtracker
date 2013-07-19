@@ -17,6 +17,7 @@ class BillStage(models.Model):
 class PreparliamentaryStage(BillStage):
     comments_start = models.DateField()
     comments_end = models.DateField()
+    document_url = models.URLField(null=True, blank=True)
 
 class ParliamentFirstReading(BillStage):
     pass

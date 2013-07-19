@@ -20,6 +20,7 @@ class GovInfoScraper(models.Model):
             bill=bill,
             comments_start=self.comment_startdate,
             comments_end=self.comment_enddate,
+            document_url=self.url
         )
 
         return bill
