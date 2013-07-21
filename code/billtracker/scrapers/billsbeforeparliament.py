@@ -65,7 +65,8 @@ class DBPipeline(object):
                 date_introduced=parser.parse(item["date_introduced"]),
                 bill_stage=item["bill_stage"],
                 document_number=item["document_number"],
-                url=item["document_url"]
+                url=item["document_url"],
+                committee=item["committee"],
             )
         return item
 
