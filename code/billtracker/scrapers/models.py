@@ -33,6 +33,61 @@ class GovInfoScraper(models.Model):
     def __unicode__(self):
         return "[%s] %s" % (self.bill_code, self.bill_name)
 
+class BillsBeforeParliamentScraper(models.Model):
+    bill_name = models.CharField(max_length=100)
+    bill_code = models.CharField(max_length=10)
+    introduced_by = models.CharField(max_length=100)
+    date_introduced = models.DateField()
+    bill_stage = models.CharField(max_length=3, choices=[
+        ("1", "National Assembly"),
+        ("2", "NCOP"),
+        ("3", "Sent to President"),
+        ("4", "Finalised in an Act"),
+        ("5", "Withdrawn"),
+    ])
+    document_number = models.CharField(max_length=10)
+    url = models.URLField(null=True, blank=True)
+    reviewed = models.BooleanField(default=False)
+
+    def convert_to_bill(self):
+        if self.reviewed:
+            raise bill_models.BillException("Cannot re-convert once already converted")
+
+        try:
+            bill = bill_models.Bill.objects.get(code=self.bill_code)
+        except bill_models.Bill.DoesNotExist:
+            bill = bill_models.Bill.objects.create(
+                name=self.bill_name,
+                code=self.bill_code,
+            )
+
+        #if self.bill_stage == "1":
+        #    bill_models.ParliamentMinutesScraper.objects.create(
+        #        bill=bill,
+        #        comments_start=self.comment_startdate,
+        #        comments_end=self.comment_enddate,
+        #        document_url=self.url
+        #    )
+        #    
+        #bill_models.PreparliamentaryStage.objects.create(
+        #    bill=bill,
+        #    comments_start=self.comment_startdate,
+        #    comments_end=self.comment_enddate,
+        #    document_url=self.url
+        #)
+        self.reviewed = True
+        self.save()
+
+        return bill
+
+
+    def __unicode__(self):
+        return "[%s] %s" % (self.bill_code, self.bill_name)
+
+    class Meta:
+        verbose_name_plural = "Bills before parliament"
+        verbose_name = "Bills before parliament"
+
 class ParliamentMinutesScraper(models.Model):
     filename = models.FileField(upload_to=settings.DIR_PARLIAMENT_MINUTES)
     house = models.CharField(max_length=20)  
