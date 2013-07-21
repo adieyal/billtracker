@@ -74,7 +74,7 @@ class BillsBeforeParliamentScraper(models.Model):
         if self.committee:
             bill_models.ParliamentPortfolioCommittee.objects.create(
                 bill=bill,
-                committee=self.committeee
+                committee=self.committee
             )
 
         self.reviewed = True
