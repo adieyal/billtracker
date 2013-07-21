@@ -50,6 +50,7 @@ class BillsBeforeParliamentScraper(models.Model):
     committee = models.CharField(max_length=100, null=True, blank=True)
     reviewed = models.BooleanField(default=False)
 
+    # TODO - add NCOP and Presidential stages
     def convert_to_bill(self):
         if self.reviewed:
             raise bill_models.BillException("Cannot re-convert once already converted")
@@ -62,26 +63,23 @@ class BillsBeforeParliamentScraper(models.Model):
                 code=self.bill_code,
             )
 
-        if self.bill_stage == "1":
-            bill_models.ParliamentIntroduction.objects.create(
-                bill=bill,
-                introduced_by=self.introduced_by,
-                date_introduced=self.date_introduced,
-                document_number=self.document_number,
-                url=self.url
-            )
-            self.reviewed = True
-            self.save()
-            
-        #bill_models.PreparliamentaryStage.objects.create(
-        #    bill=bill,
-        #    comments_start=self.comment_startdate,
-        #    comments_end=self.comment_enddate,
-        #    document_url=self.url
-        #)
-        #self.reviewed = True
-        #self.save()
+        bill_models.ParliamentIntroduction.objects.create(
+            bill=bill,
+            introduced_by=self.introduced_by,
+            date_introduced=self.date_introduced,
+            document_number=self.document_number,
+            url=self.url
+        )
 
+        if self.committee:
+            bill_models.ParliamentPortfolioCommittee.objects.create(
+                bill=bill,
+                committee=self.committeee
+            )
+
+        self.reviewed = True
+        self.save()
+            
         return bill
 
 
