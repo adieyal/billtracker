@@ -19,6 +19,12 @@ class GovInfoScraperAdmin(admin.ModelAdmin):
 class BillsBeforeParliamentScraperAdmin(admin.ModelAdmin):
     list_display = ('bill_name', 'bill_code', 'introduced_by', 'date_introduced', 'bill_stage', 'reviewed') 
     list_filter = ('reviewed', 'bill_stage') 
+    actions = ['convert_to_bill']
+
+    def convert_to_bill(self, request, queryset):
+        for item in queryset.filter(reviewed=False):
+            item.convert_to_bill()
+    convert_to_bill.short_description = "Convert scraped items to bills"
 
 admin.site.register(models.GovInfoScraper, GovInfoScraperAdmin)
 admin.site.register(models.BillsBeforeParliamentScraper, BillsBeforeParliamentScraperAdmin)

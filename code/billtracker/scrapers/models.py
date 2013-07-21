@@ -47,6 +47,7 @@ class BillsBeforeParliamentScraper(models.Model):
     ])
     document_number = models.CharField(max_length=10)
     url = models.URLField(null=True, blank=True)
+    committee = models.CharField(max_length=100, null=True, blank=True)
     reviewed = models.BooleanField(default=False)
 
     def convert_to_bill(self):
@@ -61,22 +62,25 @@ class BillsBeforeParliamentScraper(models.Model):
                 code=self.bill_code,
             )
 
-        #if self.bill_stage == "1":
-        #    bill_models.ParliamentMinutesScraper.objects.create(
-        #        bill=bill,
-        #        comments_start=self.comment_startdate,
-        #        comments_end=self.comment_enddate,
-        #        document_url=self.url
-        #    )
-        #    
+        if self.bill_stage == "1":
+            bill_models.ParliamentIntroduction.objects.create(
+                bill=bill,
+                introduced_by=self.introduced_by,
+                date_introduced=self.date_introduced,
+                document_number=self.document_number,
+                url=self.url
+            )
+            self.reviewed = True
+            self.save()
+            
         #bill_models.PreparliamentaryStage.objects.create(
         #    bill=bill,
         #    comments_start=self.comment_startdate,
         #    comments_end=self.comment_enddate,
         #    document_url=self.url
         #)
-        self.reviewed = True
-        self.save()
+        #self.reviewed = True
+        #self.save()
 
         return bill
 
