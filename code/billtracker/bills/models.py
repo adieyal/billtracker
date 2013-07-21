@@ -7,7 +7,7 @@ class BillException(Exception):
 
 class Bill(models.Model):
     name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10)
+    code = models.CharField(max_length=50)
     
     @property
     def current_stage(self):
