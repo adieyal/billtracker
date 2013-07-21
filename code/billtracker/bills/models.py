@@ -28,6 +28,12 @@ class PreparliamentaryStage(BillStage):
     comments_end = models.DateField()
     document_url = models.URLField(null=True, blank=True)
 
+class ParliamentIntroduction(BillStage):
+    introduced_by = models.CharField(max_length=100)
+    date_introduced = models.DateField()
+    document_number = models.CharField(max_length=10)
+    url = models.URLField(null=True, blank=True)
+
 class ParliamentFirstReading(BillStage):
     pass
 
