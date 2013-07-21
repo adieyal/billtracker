@@ -14,7 +14,7 @@ class Bill(models.Model):
         return BillStage.objects.filter(bill=self).order_by("-id").select_subclasses()[0]
 
     def __unicode__(self):
-        return self.name
+        return "[%s] %s" % (self.code, self.name)
 
 class BillStage(models.Model):
     bill = models.ForeignKey(Bill, related_name="stages")
@@ -38,7 +38,7 @@ class ParliamentFirstReading(BillStage):
     pass
 
 class ParliamentPortfolioCommittee(BillStage):
-    pass
+    committee = models.CharField(max_length=100, blank=True)
 
 class ParliamentSecondReading(BillStage):
     pass
